@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Demo</title>
+    <style>
+        td{
+            width: 100px;
+            text-align: center
+        }
+    </style>
+</head>
+<body>
+    <div id="demo" align="center">
+        <div>
+            <label>姓名:</label>
+            <input v-model="newUser.name">
+        </div>
+        <div>
+            <label>年龄:</label>
+            <input v-model="newUser.age">
+        </div>
+        <div>
+            <label>性别:</label>
+            <select v-model="newUser.sex">
+                <option value="男">男</option>
+                <option value="女">女</option>
+            </select>
+        </div>
+        <div>
+            <button v-on:click="addUser">添加</button>
+        </div>
+        <br/>
+        <table border="1">
+            <thead>
+                <tr>
+                    <td>序号</td>
+                    <td>姓名</td>
+                    <td>年龄</td>
+                    <td>性别</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(user, index) in list">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.age }}</td>
+                    <td>{{ user.sex }}</td>
+                    <!-- v-on缩写@ -->
+                    <td><button @click="deleteUser(index)">删除</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var demo = new Vue({
+        el: '#demo',
+        data: {
+            newUser:{
+                name: "",
+                age: "0",
+                sex: "男"
+            },
+            list: [
+                {
+                    name: "Wang",
+                    age: "22",
+                    sex: "男"
+                }
+            ],
+        },
+        methods:{
+            addUser: function(){
+                this.list.push(this.newUser);
+                // 添加User后重置属性，不然会和之前的添加的User数据绑定
+                this.newUser = {name: "",age: "0",sex: "男"};
+            },
+            deleteUser: function(index){
+                this.list.splice(index, 1);
+            }
+        }
+    })
+</script>
+</html>

@@ -2,6 +2,8 @@
 
 > A Vue.js project
 
+> 主要参考官方Vue.js文档:[https://cn.vuejs.org/v2/guide/installation.html](https://cn.vuejs.org/v2/guide/installation.html)
+
 > 主要参考keepfool的Vue.js教程:[https://github.com/keepfool/vue-tutorials](https://github.com/keepfool/vue-tutorials)
 
 ## Build Setup
