@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Props双向绑定</title>
+</head>
+<body>
+    <div id="app">
+        <table border="2" align="center" style="text-align: center">
+            <thead>
+                <tr>
+                    <td colspan="2">父组件</td>
+                </tr>
+                <tr>
+                    <td>姓名</td>
+                    <td>年龄</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ parentName }}</td>
+                    <td>{{ parentAge }}</td>
+                </tr>
+                <tr>
+                    <td><input type="text" v-model="parentName" /></td>
+                    <td><input type="text" v-model="parentAge" /></td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Vue2 v-bind的.once和.sync修饰符移除 -->
+        <my-component :child-name.sync="parentName" :child-age.sycn="parentAge"></my-component>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<template id='myComponent'>
+    <table border="2" align="center" style="text-align: center">
+        <thead>
+            <tr>
+                <td colspan="2">子组件</td>
+            </tr>
+            <tr>
+                <td>姓名</td>
+                <td>年龄</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ childName }}</td>
+                <td>{{ childAge }}</td>
+            </tr>
+            <tr>
+                <td><input type="text" v-model="childName" /></td>
+                <td><input type="text" v-model="childAge" /></td>
+            </tr>
+        </tbody>
+    </table>
+</template>
+<script>
+    // 使用template创建组件
+    var app = new Vue({
+        el: '#app',
+        data: {
+            parentName: 'wang',
+            parentAge: 21
+        },
+        // 直接创建和注册局部组件
+        components: {
+            'my-component': {
+                template: '#myComponent',
+                props: ['childName', 'childAge']
+            }
+        }
+    });
+</script>
+</html>

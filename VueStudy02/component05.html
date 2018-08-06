@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Props基础示例</title>
+</head>
+<body>
+    <div id="app">
+        <!-- :为v-bind的缩写 -->
+        <my-component v-bind:my-name="name" :my-age="age"></my-component>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<template id='myComponent'>
+    <table border="2" align="center" style="text-align: center">
+        <thead>
+            <tr>
+                <td>姓名</td>
+                <td>年龄</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ myName }}</td>
+                <td>{{ myAge }}</td>
+            </tr>
+        </tbody>
+    </table>
+</template>
+<script>
+    // 使用template创建组件
+    var app = new Vue({
+        el: '#app',
+        data: {
+            name: 'wang',
+            age: 21
+        },
+        // 直接创建和注册局部组件
+        components: {
+            'my-component': {
+                template: '#myComponent',
+                props: ['myName', 'myAge']
+            }
+        }
+    });
+</script>
+</html>

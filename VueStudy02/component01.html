@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>全局组件</title>
+</head>
+<body>
+    <div id="app">
+        <my-component></my-component>
+    </div>
+    <div id="app-2">
+        <my-component></my-component>
+    </div>
+    <my-component></my-component>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    // 新建组件
+    var myComponent = Vue.extend({
+        template : '<p>Hello Component</p>'
+    });
+    // 全局注册组件每个Vue实例都可以使用
+    Vue.component('my-component', myComponent);
+    // 组件应该挂载到某个Vue实例下，否则它不会生效
+    var app1 = new Vue({
+        el: '#app'
+    });
+    var app2 = new Vue({
+        el: '#app-2'
+    });
+</script>
+</html>

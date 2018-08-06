@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>标签组件</title>
+</head>
+<body>
+    <div id="app">
+        <my-component></my-component>
+    </div>
+    <div id="app-2">
+        <my-component></my-component>
+        <my-component2></my-component2>
+        <my-component2-2></my-component2-2>
+    </div>
+    <div id="app-3">
+        <my-component3></my-component3>
+    </div>
+    <div id="app-4">
+        <my-component4></my-component4>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    // 使用Vue.component()直接创建和注册全局组件
+    Vue.component('my-component', {
+        template: '<p>Hello Component1</p>'
+    });
+    // 组件应该挂载到某个Vue实例下，否则它不会生效
+    var app1 = new Vue({
+        el: '#app'
+    });
+    var app2 = new Vue({
+        el: '#app-2',
+        // 直接创建和注册局部组件
+        components: {
+            'my-component2': {
+                template: '<p>Hello Component2</p>'
+            },
+            'my-component2-2': {
+                template: '<p>Hello Component2-2</p>'
+            }
+        }
+    });
+</script>
+<script type="text/x-template" id="myComponent3">
+    <p>This is a script component!</p>
+</script>
+<script>
+    // 使用script创建组件
+    var app3 = new Vue({
+        el: '#app-3',
+        // 直接创建和注册局部组件
+        components: {
+            'my-component3': {
+                template: '#myComponent3'
+            }
+        }
+    });
+</script>
+<template id='myComponent4'>
+    <p>This is a template component!</p>
+</template>
+<script>
+    // 使用template创建组件
+    var app4 = new Vue({
+        el: '#app-4',
+        // 直接创建和注册局部组件
+        components: {
+            'my-component4': {
+                template: '#myComponent4'
+            }
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>局部组件</title>
+</head>
+<body>
+    <div id="app">
+        <my-component></my-component>
+    </div>
+    <div id="app-2">
+        <!-- 由于my-component组件是注册在#app元素对应的Vue实例下的，所以它不能在其它Vue实例下使用 -->
+        <my-component></my-component>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    // 新建组件
+    var myComponent = Vue.extend({
+        template : '<p>Hello Component</p>'
+    });
+    // 组件应该挂载到某个Vue实例下，否则它不会生效
+    var app1 = new Vue({
+        el: '#app',
+        // 局部注册组件只有当前Vue实例可以使用
+        components: {
+            'my-component': myComponent
+        }
+    });
+    var app2 = new Vue({
+        el: '#app-2'
+    });
+</script>
+</html>

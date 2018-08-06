@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父子组件</title>
+</head>
+<body>
+    <div id="app">
+        <parent-component></parent-component>
+    </div>
+    <!-- <child-component></child-component> -->
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    // 新建子组件，组件要用标签
+    var child = Vue.extend({
+        template : '<p>Hello child Component</p>'
+    });
+    // 新建父组件
+    // 子组件只能在父组件的template中使用
+    var parent = Vue.extend({
+        template : '<p>Hello Parent Component<child-component></child-component></p>',
+        // 将子组件局部注册到父组件
+        components: {
+            'child-component': child
+        }
+    });
+    // 全局注册组件每个Vue实例都可以使用
+    Vue.component('parent-component', parent);
+    // 组件应该挂载到某个Vue实例下，否则它不会生效
+    var app1 = new Vue({
+        el: '#app'
+    });
+</script>
+</html>
