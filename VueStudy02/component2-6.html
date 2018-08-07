@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>$parent</title>
+    <style>
+        template{
+            display: none;
+        }
+    </style>
+</head>
+<!-- 注意：尽管可以访问父链上任意的实例，不过子组件应当避免直接依赖父组件的数据，尽量显式地使用 props 传递数据。
+另外，在子组件中修改父组件的状态是非常糟糕的做法，因为： 
+1.这让父组件与子组件紧密地耦合； 
+2. 只看父组件，很难理解父组件的状态。因为它可能被任意子组件修改！理想情况下，只有组件自己能修改它的状态。 -->
+<body>
+    <div id="app">
+        <parent-component></parent-component>
+    </div>
+    <template id='parentComponent'>
+        <!-- 组件最外层必须带一个标签 -->
+        <div>
+            <child-component></child-component>
+        </div>
+    </template>
+    <template id='childComponent'>
+        <!-- 组件最外层必须带一个标签 -->
+        <div>
+            <p>This is child Component</p>
+            <button @click="showParentData">父组件数据</button>
+        </div>
+    </template>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    Vue.component('parent-component', {
+        template: '#parentComponent',
+        components: {
+            'child-component': {
+                template: '#childComponent',
+                methods: {
+                    showParentData: function(){
+                        alert(this.$parent.msg);
+                    }
+                }
+            }
+        },
+        data: function() {
+            return {
+                msg: 'parent Component'
+            }
+        }
+    });
+    
+    var app = new Vue({
+        el: "#app"
+    });
+</script>
+</html>

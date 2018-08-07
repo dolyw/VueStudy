@@ -8,6 +8,10 @@
 2. 感谢keepfool的Vue.js——60分钟快速入门:[http://www.cnblogs.com/keepfool/p/5619070.html](http://www.cnblogs.com/keepfool/p/5619070.html)
 3. 不要使用关键字delete作为方法名:[https://blog.csdn.net/xiong451823652/article/details/80550317](https://blog.csdn.net/xiong451823652/article/details/80550317)
 
+##### Vue1.0和Vue2.0遇到的不同
+
+1. v-for的index取值发生了改变，直接使用index即可
+
 #### 软件架构
 
 1. xxxx

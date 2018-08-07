@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>$children</title>
+    <style>
+        template{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <parent-component></parent-component>
+    </div>
+    <template id='parentComponent'>
+        <!-- 组件最外层必须带一个标签 -->
+        <div>
+            <child-component1></child-component1>
+            <child-component2></child-component2>
+            <button @click="showChildData">子组件数据</button>
+        </div>
+    </template>
+    <template id='childComponent1'>
+        <p>This is child Component1</p>
+    </template>
+    <template id='childComponent2'>
+        <p>This is child Component2</p>
+    </template>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    Vue.component('parent-component', {
+        template: '#parentComponent',
+        components: {
+            'child-component1': {
+                template: '#childComponent1',
+                data: function(){
+                    return {
+                        msg: 'child Component1'
+                    }
+                }
+            },
+            'child-component2': {
+                template: '#childComponent2',
+                data: function(){
+                    return {
+                        msg: 'child Component2'
+                    }
+                }
+            }
+        },
+        methods: {
+            showChildData: function(){
+                for (var index = 0, len = this.$children.length; index < len; index++) {
+                    alert(this.$children[index].msg);
+                }
+            }
+        }
+    });
+    
+    var app = new Vue({
+        el: "#app"
+    });
+</script>
+</html>

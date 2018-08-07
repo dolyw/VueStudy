@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>搜索Demo</title>
+</head>
+<body>
+    <div id="app">
+        <span>SearchByName: </span>
+        <input v-model="searchQuery">
+        <table>
+            <thead>
+                <tr>
+                    <td v-for="col in columns">{{ col | capitalize }}</td>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Vue 1.0 内置filteredData -->
+                <!-- <tr v-for="entry in data | filterBy filterKey">
+                    <td v-for="col in columns">
+                        {{entry[col]}}
+                    </td>
+                </tr> -->
+                <!-- Vue 2.0 自己写的filteredData -->
+                <tr v-for="entry in filteredData">
+                    <td v-for="col in columns">{{ entry[col] }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            searchQuery: '',
+            columns: ['name', 'gender', 'age'],
+            data: [{
+                name: 'Jack',
+                gender: 'male',
+                age: 26
+            }, {
+                name: 'John',
+                gender: 'female',
+                age: 20
+            }, {
+                name: 'Lucy',
+                gender: 'female',
+                age: 16
+            }]
+        },
+        filters: {
+            // 首字母转大写
+            capitalize: function (value) {
+                if (!value) {
+                    return '';
+                }
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            }
+        },
+        computed: {
+            // 字符查找过滤
+            filteredData: function () {
+                var self = this;
+                return this.data.filter(function (item) {
+                    return item.name.toLowerCase().indexOf(self.searchQuery.toLowerCase()) !== -1;
+                })
+            }
+        }
+    });
+</script>
+</html>

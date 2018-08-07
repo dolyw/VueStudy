@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Slot</title>
+    <style>
+        template{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <my-component>
+            <div slot='header'>
+                <button @click="showMsg">header</button>
+            </div>
+            <div slot='footer'>Hello Vue.js</div>
+        </my-component>
+    </div>
+    <template id='myComponent'>
+        <div>
+            <slot name='header'></slot>
+            <slot name='body'>
+                <button @click="showMsg">body</button>
+            </slot>
+            <slot name='footer'></slot>
+        </div>
+    </template>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var app = new Vue({
+        el: "#app",
+        methods: {
+            showMsg: function(){
+                alert('这是Vue实例');
+            }
+        },
+        components: {
+            "my-component": {
+                template: "#myComponent",
+                methods: {
+                    showMsg: function(){
+                        alert('这是组件');
+                    }
+                }
+            }
+        }
+    });
+</script>
+</html>
