@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CRUD</title>
+    <style>
+        table tr td {
+            text-align: center;
+        }
+    
+        template {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p><label>搜索:</label><input type="text" v-model="searchStr"></p>
+        <grid-table :col-name-grid="colName" :table-data-grid="tableData" :search-str-grid="searchStr"></grid-table>
+    </div>
+    <template id="gridTable">
+        <div>
+            <p><add-or-update></add-or-update></p>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <td v-for="col in colNameGrid">{{ col | capitalize }}</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(user, index) in filteredData">
+                        <td>{{ index + 1 }}</td>
+                        <td v-for="property in user">{{ property }}</td>
+                        <td>
+                            <button @click="delUser(index)">删除</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+    <template id="addOrUpdate">
+        <table border="1">
+            <tr>
+                <td><label>name:</label></td>
+                <td><input type="text" v-model="newUser.name"></td>
+            </tr>
+            <tr>
+                <td><label>sex:</label></td>
+                <td>
+                    <select v-model="newUser.sex">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label>age:</label></td>
+                <td><input type="text" v-model="newUser.age"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button @click="addOrUpdate">addOrUpdate</button></td>
+            </tr>
+        </table>
+    </template>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    Vue.component('grid-table', {
+        template: "#gridTable",
+        props: {
+            searchStrGrid: String,
+            colNameGrid: Array,
+            tableDataGrid: Array
+        },
+        filters: {
+            // 首字母转大写
+            capitalize: function(value) {
+                if(!value){
+                    return "";
+                }
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            }
+        },
+        computed: {
+            // 字符查找过滤
+            filteredData: function () {
+                var self = this;
+                return this.tableDataGrid.filter(function (user) {
+                    return user.name.toLowerCase().indexOf(self.searchStrGrid.toLowerCase()) != -1 ||
+                        user.sex.toLowerCase().indexOf(self.searchStrGrid.toLowerCase()) != -1 ||
+                        user.age.toString().toLowerCase().indexOf(self.searchStrGrid.toLowerCase()) != -1;
+                });
+            }
+        },
+        methods: {
+            delUser: function(index) {
+                this.tableDataGrid.splice(index, 1);
+            }
+        },
+        components: {
+            'add-or-update': {
+                template: '#addOrUpdate',
+                data: function(){
+                    return {
+                        newUser: {
+                            name: '',
+                            sex: '男',
+                            age: 0
+                        }
+                    }
+                },
+                methods: {
+                    addOrUpdate: function(){
+                        // 在子组件中修改父组件不好的做法
+                        this.$parent.tableDataGrid.push(this.newUser);
+                        // this.$root.tableData.push(this.newUser);
+                        // 查看父组件数据
+                        /* var rootData = this.$root.tableData;
+                        for (var index = 0, len = rootData.length; index < len; index++) {
+                            alert(rootData[index].name);
+                        } */
+                        this.newUser = {name: '', sex: '男', age: 0};
+                    }
+                }
+            }
+        }
+    });
+    
+    var app = new Vue({
+        el: '#app',
+        data: {
+            searchStr: '',
+            colName: ['no', 'name', 'sex', 'age', 'option'],
+            tableData: [{
+                name: 'Jack',
+                sex: '男',
+                age: 32
+            },{
+                name: '王明',
+                sex: '男',
+                age: 43
+            },{
+                name: 'Lili',
+                sex: '女',
+                age: 24
+            },{
+                name: '李玲',
+                sex: '女',
+                age: 19
+            }]
+        }
+    });
+</script>
+</html>

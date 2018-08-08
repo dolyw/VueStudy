@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>广播事件</title>
+    <style>
+        template{
+            display: none;
+        }
+    </style>
+</head>
+<!-- Vue2.0中events选项被弃用，$dispatch和$broadcast被弃用 -->
+<body>
+    <div id="app">
+        <input type="text" v-model="msg"/>
+        <button @click="notify">broadcast</button>
+        <child-component></child-component>
+    </div>
+    <template id='childComponent'>
+        <div>
+            <ul>
+                <li v-for="item in message">
+                    父组件录入了{{ item }}
+                </li>
+            </ul>
+        </div>
+    </template>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    // 将在各处使用该事件中心
+    // 组件通过它来通信
+    var eventHub = new Vue();
+
+    Vue.component('child-component', {
+        template: '#childComponent',
+        data: function(){
+            return {
+                message: []
+            }
+        },
+        // 组件创建时启动监听
+        created: function () {
+            eventHub.$on('child-msg', this.addToMessage);
+        },
+        // 最好在组件销毁前
+        // 清除事件监听(取消监听)
+        beforeDestroy: function () {
+            eventHub.$off('child-msg', this.addToMessage);
+        },
+        methods: {
+            'addToMessage': function(msg){
+                this.message.push(msg);
+            }
+        }
+    });
+    
+    var app = new Vue({
+        el: "#app",
+        data: {
+            msg: ''
+        },
+        methods: {
+            notify: function(){
+                if(this.msg.trim()){
+                    // 分发
+                    eventHub.$emit('child-msg', this.msg);
+                    this.msg = '';
+                }
+            }
+        }
+    });
+</script>
+</html>
