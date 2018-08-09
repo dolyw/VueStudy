@@ -1,4 +1,4 @@
-# VueStudy01
+# VueStudy01-GettingStarted
 
 > Vue.js入门指令学习
 

@@ -1,4 +1,4 @@
-# VueStudy02
+# VueStudy02-Components
 
 > Vue.js组件基础学习
 

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTTP Get</title>
+    <style>
+        table tr td {
+            text-align: center;
+        }
+    
+        template {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <grid-table :col-name-grid="colName" :table-data-grid="tableData"></grid-table>
+    </div>
+    <template id="gridTable">
+        <div>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <td>No</td>
+                        <td v-for="col in colNameGrid">{{ col.name | capitalize }}</td>
+                        <td>Data</td>
+                        <!-- <td>Option</td> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(user, index) in tableDataGrid">
+                        <td v-for="property in user">{{ property }}</td>
+                        <!-- <td>
+                            <button @click="findUserByName(user.name)">修改</button>
+                            <button @click="delUser(index)">删除</button>
+                        </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+<script>
+    Vue.component('grid-table', {
+        template: '#gridTable',
+        props: {
+            colNameGrid: Array,
+            tableDataGrid: [Array, Object]
+        },
+        filters: {
+            // 首字母转大写
+            capitalize: function(value) {
+                if(!value){
+                    return "";
+                }
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            }
+        },
+    });
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            colName: [{
+                name: 'account',
+                type: 'input',
+                default: ''
+            },{
+                name: 'password',
+                type: 'input',
+                default: ''
+            },{
+                name: 'username',
+                type: 'input',
+                default: ''
+            }],
+            tableData: [],
+            apiUrl: 'http://localhost:8080/user'
+        },
+        mounted: function () {
+            this.getUsers();
+        },
+        methods: {
+            getUsers: function () {
+                // vue-resource 0.9
+                /* this.$http.get(this.apiUrl)
+                    .then((response) => {
+                        //this.$set('tableData', response.data)
+                        alert(response.data);
+                    })
+                    .catch(function (response) {
+                        console.log(response)
+                    }); */
+
+                // vue-resource 1.5
+                this.$http.get(this.apiUrl).then(response => {
+                    // success callback
+                    console.log(response.data.code);
+                    // 设置整个数组
+                    this.$set(this, 'tableData', response.data.data)
+                    //alert(response.data);
+                }, response => {
+                    // error callback
+                    console.log(response);
+                    alert("获取数据失败");
+                });
+            }
+        }
+    });
+</script>
+</html>
