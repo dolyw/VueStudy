@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>HTTP Get</title>
+    <title>HTTP Post</title>
     <style>
         table tr td {
             text-align: center;
@@ -21,6 +21,7 @@
     </div>
     <template id="gridTable">
         <div>
+            <p><add-or-update :col-name-grid="colNameGrid"></add-or-update></p>
             <table border="1">
                 <thead>
                     <tr>
@@ -42,10 +43,33 @@
             </table>
         </div>
     </template>
+    <template id="addOrUpdate">
+        <table border="1">
+            <tr v-for="col in colNameGrid">
+                <td>
+                    <label>{{ col.name }}:</label>
+                </td>
+                <td>
+                    <input v-if="col.type == 'input'" type="text" v-model="newUser[col.name]">
+                    <select v-if="col.type == 'select'" v-model="newUser[col.name]">
+                        <option v-for="opt in col.default" :value="opt">{{ opt }}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button @click="addOrUpdate">addOrUpdate</button>
+                </td>
+            </tr>
+        </table>
+    </template>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
 <script>
+    // 定义全局事件中心
+    var eventHub = new Vue();
+    
     Vue.component('grid-table', {
         template: '#gridTable',
         props: {
@@ -60,6 +84,30 @@
                 }
                 value = value.toString();
                 return value.charAt(0).toUpperCase() + value.slice(1);
+            }
+        },
+        components: {
+            "add-or-update": {
+                template: "#addOrUpdate",
+                data: function(){
+                    return {
+                        newUser: {
+                            id: 0,
+                            account: '',
+                            password: '',
+                            username: ''
+                        }
+                    }
+                },
+                props: {
+                    colNameGrid: Array
+                },
+                methods: {
+                    addOrUpdate: function(){
+                        eventHub.$emit('addOrUpdate', this.newUser);
+                        this.newUser = {};
+                    }
+                }
             }
         }
     });
@@ -87,6 +135,14 @@
         mounted: function () {
             this.getUsers();
         },
+        // 组件创建时启动监听
+        created: function() {
+            eventHub.$on('addOrUpdate', this.addOrUpdate);
+        },
+        // 最好在组件销毁前清除监听
+        beforeDestroy: function() {
+            eventHub.$off('addOrUpdate', this.addOrUpdate);
+        },
         methods: {
             getUsers: function () {
                 // vue-resource 0.9
@@ -110,6 +166,17 @@
                     // error callback
                     console.log(response);
                     alert("获取数据失败");
+                });
+            },
+            addOrUpdate: function(user){
+                this.$http.post(this.apiUrl, user).then(response => {
+                    // success callback
+                    console.log(response.data.code);
+                    this.getUsers();
+                }, response => {
+                    // error callback
+                    console.log(response);
+                    alert("添加失败");
                 });
             }
         }

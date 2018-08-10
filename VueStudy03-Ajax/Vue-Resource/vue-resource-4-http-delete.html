@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTTP Delete</title>
+    <style>
+        table tr td {
+            text-align: center;
+        }
+    
+        template {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <grid-table :col-name-grid="colName" :table-data-grid="tableData" ref="gridTable"></grid-table>
+    </div>
+    <template id="gridTable">
+        <div>
+            <p><add-or-update :col-name-grid="colNameGrid" ref="addOrUpdate"></add-or-update></p>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <td>No</td>
+                        <td v-for="col in colNameGrid">{{ col.name | capitalize }}</td>
+                        <td>Data</td>
+                        <td>Option</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(user, index) in tableDataGrid">
+                        <td v-for="property in user">{{ property }}</td>
+                        <td>
+                            <button @click="findUserById(user.id)">修改</button>
+                            <button @click="delUser(user.id)">删除</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+    <template id="addOrUpdate">
+        <table border="1">
+            <tr v-for="col in colNameGrid">
+                <td>
+                    <label>{{ col.name }}:</label>
+                </td>
+                <td>
+                    <input v-if="col.type == 'input'" type="text" v-model="newUser[col.name]">
+                    <select v-if="col.type == 'select'" v-model="newUser[col.name]">
+                        <option v-for="opt in col.default" :value="opt">{{ opt }}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button @click="addOrUpdate">addOrUpdate</button>
+                </td>
+            </tr>
+        </table>
+    </template>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+<script>
+    // 定义全局事件中心
+    var eventHub = new Vue();
+    
+    Vue.component('grid-table', {
+        template: '#gridTable',
+        props: {
+            colNameGrid: Array,
+            tableDataGrid: [Array, Object]
+        },
+        filters: {
+            // 首字母转大写
+            capitalize: function(value) {
+                if(!value){
+                    return "";
+                }
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            }
+        },
+        components: {
+            "add-or-update": {
+                template: "#addOrUpdate",
+                data: function(){
+                    return {
+                        newUser: {
+                            id: null,
+                            account: '',
+                            password: '',
+                            username: ''
+                        }
+                    }
+                },
+                props: {
+                    colNameGrid: Array
+                },
+                methods: {
+                    addOrUpdate: function(){
+                        eventHub.$emit('addOrUpdate', this.newUser);
+                        this.newUser = {};
+                    }
+                }
+            }
+        },
+        methods: {
+            findUserById: function (id) {
+                eventHub.$emit('findUserById', id);
+                //alert(id);
+            },
+            delUser: function(id){
+                eventHub.$emit('delUser', id);
+            }
+        }
+    });
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            colName: [{
+                name: 'account',
+                type: 'input',
+                default: ''
+            },{
+                name: 'password',
+                type: 'input',
+                default: ''
+            },{
+                name: 'username',
+                type: 'input',
+                default: ''
+            }],
+            tableData: [],
+            apiUrl: 'http://localhost:8080/user'
+        },
+        // 启动时就执行
+        mounted: function () {
+            this.getUsers();
+        },
+        // 组件创建时启动监听
+        created: function() {
+            eventHub.$on('addOrUpdate', this.addOrUpdate);
+            eventHub.$on('findUserById', this.findUserById);
+            eventHub.$on('delUser', this.delUser);
+        },
+        // 最好在组件销毁前清除监听
+        beforeDestroy: function() {
+            eventHub.$off('addOrUpdate', this.addOrUpdate);
+            eventHub.$off('findUserById', this.findUserById);
+            eventHub.$off('delUser', this.delUser);
+        },
+        methods: {
+            getUsers: function () {
+                // vue-resource 0.9
+                /* this.$http.get(this.apiUrl)
+                    .then((response) => {
+                        //this.$set('tableData', response.data)
+                        alert(response.data);
+                    })
+                    .catch(function (response) {
+                        console.log(response)
+                    }); */
+
+                // vue-resource 1.5
+                this.$http.get(this.apiUrl).then(response => {
+                    // success callback
+                    console.log(response.data.code);
+                    // 设置整个数组
+                    this.$set(this, 'tableData', response.data.data)
+                    //alert(response.data);
+                }, response => {
+                    // error callback
+                    console.log(response);
+                    alert("获取数据失败");
+                });
+            },
+            addOrUpdate: function(user){
+                if(user.id != null && typeof(user.id) != undefined){
+                    // alert("update");
+                    this.$http.put(this.apiUrl, user).then(response => {
+                        // success callback
+                        console.log(response.data.code);
+                        this.getUsers();
+                    }, response => {
+                        // error callback
+                        console.log(response);
+                        alert("更新失败");
+                    });
+                }else{
+                    // alert("add");
+                    this.$http.post(this.apiUrl, user).then(response => {
+                        // success callback
+                        console.log(response.data.code);
+                        this.getUsers();
+                    }, response => {
+                        // error callback
+                        console.log(response);
+                        alert("添加失败");
+                    });
+                }
+            },
+            findUserById: function(id){
+                this.$http.get(this.apiUrl + "/" + id).then(response => {
+                    // success callback
+                    console.log(response.data.code);
+                    console.log(response.data.data);
+                    console.log(this.$refs.gridTable.$refs.addOrUpdate.newUser);
+                    // this.$refs.gridTable.addOrUpdate.$set(this, 'newUser', response.data.data);
+                    this.$set(this.$refs.gridTable.$refs.addOrUpdate, 'newUser', response.data.data);
+                }, response => {
+                    // error callback
+                    console.log(response);
+                    alert("添加失败");
+                });
+            },
+            delUser: function(id){
+                this.$http.delete(this.apiUrl + "/" + id).then(response => {
+                    // success callback
+                    console.log(response.data.code);
+                    this.getUsers();
+                }, response => {
+                    // error callback
+                    console.log(response);
+                    alert("删除失败");
+                });
+            }
+        }
+    });
+</script>
+</html>

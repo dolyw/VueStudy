@@ -82,7 +82,7 @@ public class UserController {
      * @author Wang926454
      * @date 2018/8/9 16:11
      */
-    @PutMapping("/user/{id}")
+    @PutMapping("/user")
     public Map<String,Object> update(@RequestBody User user){
         int count = userService.updateByPrimaryKeySelective(user);
         Map map = new HashMap(16);
