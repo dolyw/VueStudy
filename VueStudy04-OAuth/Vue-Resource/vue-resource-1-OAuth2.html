@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OAuth2</title>
+    <style>
+        table tr td {
+            text-align: center;
+        }
+    
+        template {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <span v-if="accessToken != null">
+                {{ accessToken }} | <a href="#" @click="logout">注销</a><br/>
+                <label><button @click='getUser'>API</button>:{{ apiData }}</label>
+            </span>
+        </div>
+        <div v-if="accessToken == null">
+            <div>
+                <label>account</label>
+                <input type="text" v-model="loginModel.username" placeholder="admin" />
+            </div>
+            <div>
+                <label>password</label>
+                <input type="text" v-model="loginModel.password" placeholder="Admin123!" />
+            </div>
+            <div>
+                <label></label>
+                <button @click="login">登录</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+<script>
+    Vue.http.options.emulateJSON = true;
+    Vue.http.options.root = 'http://localhost:8080';
+    
+    // 设置全局headers
+    // Vue.http.headers.common['Authorization'] = 'Basic dGVzdDoxMjM0NQ==';
+    // Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
+    // Vue.http.headers.common['Access-Control-Allow-Methods'] = 'PUT,POST,GET,DELETE,OPTIONS';
+    // Vue.http.headers.common['Access-Control-Allow-Headers'] = 'Content-Type, Access-Control-Allow-Headers, Content-Length, Authorization, Accept, X-Requested-With';
+
+    // 拦截器设置headers
+    Vue.http.interceptors.push((request, next) => {
+        // 请求发送前的处理逻辑
+        // alert('before');
+        var accessToken = sessionStorage.getItem('accessToken');
+        // console.log(accessToken);
+        if(typeof(accessToken) != undefined && accessToken!=null && accessToken != ''){
+            // console.log('Authorization');
+            request.headers.set('Authorization', 'Bearer ' + sessionStorage.getItem('accessToken'));
+        }else{
+            // console.log('No Authorization');
+            request.headers.set('Authorization', 'Basic dGVzdDoxMjM0NQ==');
+        }
+        next((response) => {
+            // 请求发送后的处理逻辑
+            // 根据请求的状态，response参数会返回给successCallback或errorCallback
+            //alert('after');
+            //alert(response.ok + '，' + response.status);
+            return response
+        });
+    });
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            loginModel: {
+                grant_type: 'password',
+                username: '',
+                password: ''
+            },
+            accessToken: null,
+            apiData: ''
+        },
+        // 启动时就执行
+        mounted: function () {
+            this.accessToken = sessionStorage.getItem('accessToken');
+        },
+        methods: {
+            login: function() {
+                this.$resource('oauth/token').save(this.loginModel).then(response => {
+                    // success callback
+                    console.log(response.status);
+                    sessionStorage.setItem('accessToken', response.data.access_token);
+                    this.accessToken = response.data.access_token;
+                    this.apiData = '';
+                    alert("登录成功");
+                }, response => {
+                    // error callback
+                    console.log(response.data);
+                    alert("登录失败");
+                });
+            },
+            logout: function() {
+                sessionStorage.removeItem('accessToken');
+                this.accessToken = null;
+                alert("注销成功");
+            },
+            getUser: function() {
+                this.$resource('user/bar').get().then(response => {
+                    // success callback
+                    console.log(response);
+                    this.apiData = response.data;
+                }, response => {
+                    // error callback
+                    console.log(response);
+                    this.apiData = 'error';
+                });
+            }
+        }
+    });
+</script>
+</html>
