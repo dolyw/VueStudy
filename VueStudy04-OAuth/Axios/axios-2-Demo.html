@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OAuth2</title>
+    <style>
+        table tr td {
+            text-align: center;
+        }
+    
+        template {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="appLogin">
+        <div>
+            <span v-if="accessToken != null">
+                {{ accessToken }} | <a href="#" @click="logout">注销</a><br/>
+                <label><button @click='getUser'>API</button>:{{ apiData }}</label><br/>
+            </span>
+        </div>
+        <div v-if="accessToken == null">
+            <div>
+                <label>account</label>
+                <input type="text" v-model="loginModel.username" placeholder="admin" />
+            </div>
+            <div>
+                <label>password</label>
+                <input type="text" v-model="loginModel.password" placeholder="Admin123!" />
+            </div>
+            <div>
+                <label></label>
+                <button @click="login">登录</button>
+            </div>
+        </div>
+    </div>
+
+    <h4>必须登录获取到Token才能操作下面的数据</h4>
+
+    <div id="app">
+        <grid-table :col-name-grid="colName" :table-data-grid="tableData" ref="gridTable"></grid-table>
+    </div>
+
+    <template id="gridTable">
+        <div>
+            <p><add-or-update :col-name-grid="colNameGrid" ref="addOrUpdate"></add-or-update></p>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <td>No</td>
+                        <td v-for="col in colNameGrid">{{ col.name | capitalize }}</td>
+                        <td>Data</td>
+                        <td>Option</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(user, index) in tableDataGrid">
+                        <td v-for="property in user">{{ property }}</td>
+                        <td>
+                            <button @click="findUserById(user.id)">修改</button>
+                            <button @click="delUser(user.id)">删除</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+    <template id="addOrUpdate">
+        <table border="1">
+            <tr v-for="col in colNameGrid">
+                <td>
+                    <label>{{ col.name }}:</label>
+                </td>
+                <td>
+                    <input v-if="col.type == 'input'" type="text" v-model="newUser[col.name]">
+                    <select v-if="col.type == 'select'" v-model="newUser[col.name]">
+                        <option v-for="opt in col.default" :value="opt">{{ opt }}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button @click="addOrUpdate">addOrUpdate</button>
+                </td>
+            </tr>
+        </table>
+    </template>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    axios.defaults.baseURL = 'http://localhost:8080';
+    // axios.defaults.headers.common['Authorization'] = 'Basic dGVzdDoxMjM0NQ==';
+    // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    
+    // 请求拦截器设置headers
+    axios.interceptors.request.use(config => {
+        // Do something before request is sent
+        var accessToken = sessionStorage.getItem('accessToken');
+        // console.log(accessToken);
+        if(typeof(accessToken) != undefined && accessToken!=null && accessToken != ''){
+            // console.log('Authorization');
+            config.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('accessToken');
+        }else{
+            // console.log('No Authorization');
+            config.headers.common['Authorization'] = 'Basic dGVzdDoxMjM0NQ==';
+        }
+        return config;
+    }, error => {
+        // Do something with request error
+        alert('请求拦截error');
+        return Promise.reject(error);
+    });
+
+    var appLogin = new Vue({
+        el: '#appLogin',
+        data: {
+            loginModel: {
+                grant_type: 'password',
+                username: '',
+                password: ''
+            },
+            accessToken: null,
+            apiData: ''
+        },
+        // 启动时就执行
+        mounted: function () {
+            this.accessToken = sessionStorage.getItem('accessToken');
+        },
+        methods: {
+            login: function() {
+                // formData提交
+                axios({
+                    url: 'oauth/token',
+                    method: 'post',
+                    data: this.loginModel,
+                    transformRequest: [function (data) {
+                        let ret = ''
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                .then(response => {
+                    console.log(response);
+                    sessionStorage.setItem('accessToken', response.data.access_token);
+                    this.accessToken = response.data.access_token;
+                    this.apiData = '';
+                    app.getUsers();
+                    alert("登录成功");
+                })
+                .catch(error => {
+                    console.log(error.message);
+                    console.log(error.response);
+                    console.log(error.config);
+                    alert("登录失败");
+                })
+                .then(() => {
+                    // always executed
+                    // alert("总是输出");
+                });
+            },
+            logout: function() {
+                sessionStorage.removeItem('accessToken');
+                this.accessToken = null;
+                alert("注销成功");
+            },
+            getUser: function() {
+                axios.get('user/bar')
+                .then(response => {
+                    console.log(response);
+                    this.apiData = response.data;
+                })
+                .catch(error => {
+                    console.log(error.message);
+                    console.log(error.response);
+                    console.log(error.config);
+                    this.apiData = 'error';
+                })
+                .then(() => {
+                    // always executed
+                    // alert("总是输出");
+                });
+            }
+        }
+    });
+</script>
+<script>
+    // 定义全局事件中心
+    var eventHub = new Vue();
+    
+    Vue.component('grid-table', {
+        template: '#gridTable',
+        props: {
+            colNameGrid: Array,
+            tableDataGrid: [Array, Object]
+        },
+        filters: {
+            // 首字母转大写
+            capitalize: function(value) {
+                if(!value){
+                    return "";
+                }
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            }
+        },
+        components: {
+            "add-or-update": {
+                template: "#addOrUpdate",
+                data: function(){
+                    return {
+                        newUser: {
+                            id: null,
+                            account: '',
+                            password: '',
+                            username: ''
+                        }
+                    }
+                },
+                props: {
+                    colNameGrid: Array
+                },
+                methods: {
+                    addOrUpdate: function(){
+                        eventHub.$emit('addOrUpdate', this.newUser);
+                        this.newUser = {};
+                    }
+                }
+            }
+        },
+        methods: {
+            findUserById: function (id) {
+                eventHub.$emit('findUserById', id);
+                //alert(id);
+            },
+            delUser: function(id){
+                eventHub.$emit('delUser', id);
+            }
+        }
+    });
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            colName: [{
+                name: 'account',
+                type: 'input',
+                default: ''
+            },{
+                name: 'password',
+                type: 'input',
+                default: ''
+            },{
+                name: 'username',
+                type: 'input',
+                default: ''
+            }],
+            tableData: []
+        },
+        // 启动时就执行
+        mounted: function () {
+            // Token不为空才进行查询用户列表
+            var accessToken = sessionStorage.getItem('accessToken');
+            if(typeof(accessToken) != undefined && accessToken!=null && accessToken != ''){
+                this.getUsers();
+            }
+        },
+        // 组件创建时启动监听
+        created: function() {
+            eventHub.$on('addOrUpdate', this.addOrUpdate);
+            eventHub.$on('findUserById', this.findUserById);
+            eventHub.$on('delUser', this.delUser);
+        },
+        // 最好在组件销毁前清除监听
+        beforeDestroy: function() {
+            eventHub.$off('addOrUpdate', this.addOrUpdate);
+            eventHub.$off('findUserById', this.findUserById);
+            eventHub.$off('delUser', this.delUser);
+        },
+        methods: {
+            getUsers: function () {
+                axios.get('user')
+                .then(response => {
+                    console.log(response);
+                    console.log(this);
+                    this.$set(this, 'tableData', response.data.data);
+                })
+                .catch(error => {
+                    console.log(error.message);
+                    console.log(error.response);
+                    console.log(error.config);
+                    if(error.response.status == '401'){
+                        alert("请登录");
+                    }else{
+                        alert("获取数据失败");
+                    }
+                })
+                .then(() => {
+                    // always executed
+                    // alert("总是输出");
+                });
+            },
+            addOrUpdate: function(user){
+                if(user.id != null && typeof(user.id) != undefined){
+                    // alert("update");
+                    axios.put('user', user)
+                    .then(response => {
+                        console.log(response.data.code);
+                        this.getUsers();
+                    })
+                    .catch(error => {
+                        console.log(error.message);
+                        console.log(error.response);
+                        console.log(error.config);
+                        if(error.response.status == '401'){
+                            alert("请登录");
+                        }else{
+                            alert("更新失败");
+                        }
+                    })
+                    .then(() => {
+                        // always executed
+                        // alert("总是输出");
+                    });
+                }else{
+                    // alert("add");
+                    axios.post('user', user)
+                    .then(response => {
+                        console.log(response.data.code);
+                        this.getUsers();
+                    })
+                    .catch(error => {
+                        console.log(error.message);
+                        console.log(error.response);
+                        console.log(error.config);
+                        if(error.response.status == '401'){
+                            alert("请登录");
+                        }else{
+                            alert("添加失败");
+                        }
+                    })
+                    .then(() => {
+                        // always executed
+                        // alert("总是输出");
+                    });
+                }
+            },
+            findUserById: function(id){
+                axios.get(`user/${id}`)
+                .then(response => {
+                    console.log(response.data.code);
+                    console.log(response.data.data);
+                    console.log(this.$refs.gridTable.$refs.addOrUpdate.newUser);
+                    // this.$refs.gridTable.addOrUpdate.$set(this, 'newUser', response.data.data);
+                    this.$set(this.$refs.gridTable.$refs.addOrUpdate, 'newUser', response.data.data);
+                })
+                .catch(error => {
+                    console.log(error.message);
+                    console.log(error.response);
+                    console.log(error.config);
+                    if(error.response.status == '401'){
+                        alert("请登录");
+                    }else{
+                        alert("查询失败");
+                    }
+                })
+                .then(() => {
+                    // always executed
+                    // alert("总是输出");
+                });
+            },
+            delUser: function(id){
+                axios.delete(`user/${id}`)
+                .then(response => {
+                    console.log(response.data.code);
+                    this.getUsers();
+                })
+                .catch(error => {
+                    console.log(error.message);
+                    console.log(error.response);
+                    console.log(error.config);
+                    if(error.response.status == '401'){
+                        alert("请登录");
+                    }else{
+                        alert("删除失败");
+                    }
+                })
+                .then(() => {
+                    // always executed
+                    // alert("总是输出");
+                });
+            }
+        }
+    });
+</script>
+</html>

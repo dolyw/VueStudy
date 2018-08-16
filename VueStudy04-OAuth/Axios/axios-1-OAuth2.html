@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OAuth2</title>
+    <style>
+        table tr td {
+            text-align: center;
+        }
+    
+        template {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <span v-if="accessToken != null">
+                {{ accessToken }} | <a href="#" @click="logout">注销</a><br/>
+                <label><button @click='getUser'>API</button>:{{ apiData }}</label>
+            </span>
+        </div>
+        <div v-if="accessToken == null">
+            <div>
+                <label>account</label>
+                <input type="text" v-model="loginModel.username" placeholder="admin" />
+            </div>
+            <div>
+                <label>password</label>
+                <input type="text" v-model="loginModel.password" placeholder="Admin123!" />
+            </div>
+            <div>
+                <label></label>
+                <button @click="login">登录</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    axios.defaults.baseURL = 'http://localhost:8080';
+    // axios.defaults.headers.common['Authorization'] = 'Basic dGVzdDoxMjM0NQ==';
+    // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    
+    // 请求拦截器设置headers
+    axios.interceptors.request.use(config => {
+        // Do something before request is sent
+        var accessToken = sessionStorage.getItem('accessToken');
+        // console.log(accessToken);
+        if(typeof(accessToken) != undefined && accessToken!=null && accessToken != ''){
+            // console.log('Authorization');
+            config.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('accessToken');
+        }else{
+            // console.log('No Authorization');
+            config.headers.common['Authorization'] = 'Basic dGVzdDoxMjM0NQ==';
+        }
+        return config;
+    }, error => {
+        // Do something with request error
+        alert('请求拦截error');
+        return Promise.reject(error);
+    });
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            loginModel: {
+                grant_type: 'password',
+                username: '',
+                password: ''
+            },
+            accessToken: null,
+            apiData: ''
+        },
+        // 启动时就执行
+        mounted: function () {
+            this.accessToken = sessionStorage.getItem('accessToken');
+        },
+        methods: {
+            login: function() {
+                // formData提交
+                axios({
+                    url: 'oauth/token',
+                    method: 'post',
+                    data: this.loginModel,
+                    transformRequest: [function (data) {
+                        let ret = ''
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                .then(response => {
+                    console.log(response);
+                    sessionStorage.setItem('accessToken', response.data.access_token);
+                    this.accessToken = response.data.access_token;
+                    this.apiData = '';
+                    alert("登录成功");
+                })
+                .catch(error => {
+                    console.log(error);
+                    alert("登录失败");
+                })
+                .then(() => {
+                    // always executed
+                    // alert("总是输出");
+                });
+            },
+            logout: function() {
+                sessionStorage.removeItem('accessToken');
+                this.accessToken = null;
+                alert("注销成功");
+            },
+            getUser: function() {
+                axios.get('user/bar')
+                .then(response => {
+                    console.log(response);
+                    this.apiData = response.data;
+                })
+                .catch(error => {
+                    console.log(response);
+                    this.apiData = 'error';
+                })
+                .then(() => {
+                    // always executed
+                    // alert("总是输出");
+                });
+            }
+        }
+    });
+</script>
+</html>
