@@ -1,6 +1,6 @@
 # VueStudy03-Ajax
 
-> Vue-Resource基础学习
+> Vue-Resource基础学习 Axios基础学习
 
 #### 项目介绍
 
@@ -12,6 +12,9 @@
 6. 感谢oneplus的vue $set整个数组:[https://segmentfault.com/q/1010000009824044](https://segmentfault.com/q/1010000009824044)
 7. 感谢zhangchao19890805
 的Spring Boot全局支持CORS（跨源请求）的配置方法:[https://blog.csdn.net/zhangchao19890805/article/details/53893735/](https://blog.csdn.net/zhangchao19890805/article/details/53893735/)
+8. 感谢axios的axios文档使用:[https://github.com/axios/axios](https://github.com/axios/axios)
+9. 感谢不知名的axios中文文档使用:[https://www.kancloud.cn/yunye/axios/234845](https://www.kancloud.cn/yunye/axios/234845)
+10. 感谢全栈Developer的vue使用axios中this指向问题:[https://blog.csdn.net/qq_27008807/article/details/78868634](https://blog.csdn.net/qq_27008807/article/details/78868634)
 
 ##### Vue1.0和Vue2.0遇到的不同
 

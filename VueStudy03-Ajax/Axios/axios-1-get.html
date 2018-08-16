@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Axios Get</title>
+    <style>
+        table tr td {
+            text-align: center;
+        }
+    
+        template {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <grid-table :col-name-grid="colName" :table-data-grid="tableData"></grid-table>
+    </div>
+    <template id="gridTable">
+        <div>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <td>No</td>
+                        <td v-for="col in colNameGrid">{{ col.name | capitalize }}</td>
+                        <td>Data</td>
+                        <!-- <td>Option</td> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(user, index) in tableDataGrid">
+                        <td v-for="property in user">{{ property }}</td>
+                        <!-- <td>
+                            <button @click="findUserByName(user.name)">修改</button>
+                            <button @click="delUser(index)">删除</button>
+                        </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    Vue.component('grid-table', {
+        template: '#gridTable',
+        props: {
+            colNameGrid: Array,
+            tableDataGrid: [Array, Object]
+        },
+        filters: {
+            // 首字母转大写
+            capitalize: function(value) {
+                if(!value){
+                    return "";
+                }
+                value = value.toString();
+                return value.charAt(0).toUpperCase() + value.slice(1);
+            }
+        }
+    });
+
+    // axios不能使用use方法，转而应该进行如下操作
+    Vue.prototype.$axios = axios;
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            colName: [{
+                name: 'account',
+                type: 'input',
+                default: ''
+            },{
+                name: 'password',
+                type: 'input',
+                default: ''
+            },{
+                name: 'username',
+                type: 'input',
+                default: ''
+            }],
+            tableData: [],
+            apiUrl: 'http://localhost:8080/user'
+        },
+        // 启动时就执行
+        mounted: function () {
+            this.getUsers();
+        },
+        methods: {
+            getUsers: function () {
+                // 内部this及Vue this的区别 ES6箭头可以直接使内部为Vue this
+
+                /* var vm = this;
+                this.$axios.get(this.apiUrl)
+                .then(function (response) {
+                    console.log(response);
+                    console.log(vm);
+                    vm.$set(vm, 'tableData', response.data.data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert("获取数据失败");
+                })
+                .then(function () {
+                    // always executed
+                }); */
+
+                this.$axios.get(this.apiUrl)
+                .then(response => {
+                    console.log(response);
+                    console.log(this);
+                    this.$set(this, 'tableData', response.data.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                    alert("获取数据失败");
+                })
+                .then(() => {
+                    // always executed
+                    // alert("总是输出");
+                });
+            }
+        }
+    });
+</script>
+</html>
