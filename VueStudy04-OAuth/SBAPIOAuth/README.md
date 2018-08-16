@@ -9,7 +9,7 @@
 
 #### 软件架构
 
-1. SpringBoot + FreeMarker + Mybatis + PageHelper + 通用Mapper
+1. SpringBoot + FreeMarker + Mybatis + PageHelper + 通用Mapper + Spring Security OAth2
 
 #### 安装教程
 

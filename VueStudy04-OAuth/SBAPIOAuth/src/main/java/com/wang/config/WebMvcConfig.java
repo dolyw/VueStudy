@@ -18,9 +18,4 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(false).maxAge(3600);
     }
-
-    /*@Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new ProcessInterceptor()).addPathPatterns("/**");
-    }*/
 }

@@ -7,11 +7,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
 /**
- * TODO：Oauth2
+ * TODO：Oauth2拦截设置，设置OPTIONS预请求不拦截
  * @author Wang926454
  * @date 2018/8/15 10:19
  */
-/*@Configuration
+@Configuration
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
     @Override
@@ -23,4 +23,4 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
             .and().httpBasic()
             .and().csrf().disable();
     }
-}*/
+}
