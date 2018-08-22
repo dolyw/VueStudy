@@ -8,6 +8,7 @@
 2. 菜鸟教程的Vue.js安装:[http://www.runoob.com/vue2/vue-install.html](http://www.runoob.com/vue2/vue-install.html)
 3. 感谢Yin-X的vue-cli（vue脚手架）超详细教程:[https://blog.csdn.net/wulala_hei/article/details/80488674](https://blog.csdn.net/wulala_hei/article/details/80488674)
 4. 构建项目出现的问题:[https://www.cnblogs.com/xiyuan2016/p/7866044.html](https://www.cnblogs.com/xiyuan2016/p/7866044.html)
+5. 感谢sleepwalker_1992的npm install错误安装chromedriver失败的解决办法:[https://blog.csdn.net/sleepwalker_1992/article/details/81461117](https://blog.csdn.net/sleepwalker_1992/article/details/81461117)
 
 #### 软件架构
 
