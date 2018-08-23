@@ -4,7 +4,7 @@
 
 #### 项目介绍
 
-1. xxxx
+1. 感谢官网文档的嵌套路由[https://router.vuejs.org/zh/guide/essentials/nested-routes.html](https://router.vuejs.org/zh/guide/essentials/nested-routes.html)
 
 ##### Vue1.0和Vue2.0遇到的不同
 
