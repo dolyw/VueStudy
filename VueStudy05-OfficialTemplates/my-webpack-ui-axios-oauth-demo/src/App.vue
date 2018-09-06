@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/Login.vue'
 import TableGrid from './components/TableGrid.vue'
 
 export default {
