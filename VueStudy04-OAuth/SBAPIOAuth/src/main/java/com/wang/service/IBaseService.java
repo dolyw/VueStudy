@@ -2,20 +2,19 @@ package com.wang.service;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
 /**
- * TODO：
+ *
  * @author Wang926454
  * @date 2018/8/9 15:45
  */
-public interface IBaseService<T> extends UserDetailsService {
+public interface IBaseService<T> {
 
     // Select
     /**
-     * TODO：根据实体中的属性值进行查询，查询条件使用等号
+     * 根据实体中的属性值进行查询，查询条件使用等号
      * @param record
      * @return java.util.List<T>
      * @author Wang926454
@@ -24,7 +23,7 @@ public interface IBaseService<T> extends UserDetailsService {
     List<T> select(T record);
 
     /**
-     * TODO：根据主键字段进行查询，方法参数必须包含完整的主键属性，查询条件使用等号
+     * 根据主键字段进行查询，方法参数必须包含完整的主键属性，查询条件使用等号
      * @param key
      * @return T
      * @author Wang926454
@@ -33,7 +32,7 @@ public interface IBaseService<T> extends UserDetailsService {
     T selectByPrimaryKey(Object key);
 
     /**
-     * TODO：查询全部结果，select(null)方法能达到同样的效果
+     * 查询全部结果，select(null)方法能达到同样的效果
      * @param 
      * @return java.util.List<T>
      * @author Wang926454
@@ -42,7 +41,7 @@ public interface IBaseService<T> extends UserDetailsService {
     List<T> selectAll();
 
     /**
-     * TODO：根据实体中的属性进行查询，只能有一个返回值，有多个结果是抛出异常，查询条件使用等号
+     * 根据实体中的属性进行查询，只能有一个返回值，有多个结果是抛出异常，查询条件使用等号
      * @param record
      * @return T
      * @author Wang926454
@@ -51,7 +50,7 @@ public interface IBaseService<T> extends UserDetailsService {
     T selectOne(T record);
 
     /**
-     * TODO：根据实体中的属性查询总数，查询条件使用等号
+     * 根据实体中的属性查询总数，查询条件使用等号
      * @param record
      * @return int
      * @author Wang926454
@@ -61,7 +60,7 @@ public interface IBaseService<T> extends UserDetailsService {
 
     // Insert
     /**
-     * TODO：保存一个实体，null的属性也会保存，不会使用数据库默认值
+     * 保存一个实体，null的属性也会保存，不会使用数据库默认值
      * @param record
      * @return int
      * @author Wang926454
@@ -70,7 +69,7 @@ public interface IBaseService<T> extends UserDetailsService {
     int insert(T record);
 
     /**
-     * TODO：保存一个实体，null的属性不会保存，会使用数据库默认值
+     * 保存一个实体，null的属性不会保存，会使用数据库默认值
      * @param record
      * @return int
      * @author Wang926454
@@ -80,7 +79,7 @@ public interface IBaseService<T> extends UserDetailsService {
 
     // Update
     /**
-     * TODO：根据主键更新实体全部字段，null值会被更新
+     * 根据主键更新实体全部字段，null值会被更新
      * @param record
      * @return int
      * @author Wang926454
@@ -89,7 +88,7 @@ public interface IBaseService<T> extends UserDetailsService {
     int updateByPrimaryKey(T record);
 
     /**
-     * TODO：根据主键更新属性不为null的值
+     * 根据主键更新属性不为null的值
      * @param record
      * @return int
      * @author Wang926454
@@ -99,7 +98,7 @@ public interface IBaseService<T> extends UserDetailsService {
 
     // Delete
     /**
-     * TODO：根据实体属性作为条件进行删除，查询条件使用等号
+     * 根据实体属性作为条件进行删除，查询条件使用等号
      * @param record
      * @return int
      * @author Wang926454
@@ -108,7 +107,7 @@ public interface IBaseService<T> extends UserDetailsService {
     int delete(T record);
 
     /**
-     * TODO：根据主键字段进行删除，方法参数必须包含完整的主键属性
+     * 根据主键字段进行删除，方法参数必须包含完整的主键属性
      * @param key
      * @return int
      * @author Wang926454
@@ -118,7 +117,7 @@ public interface IBaseService<T> extends UserDetailsService {
 
     // Example
     /**
-     * TODO：根据Example条件进行查询，这个查询支持通过Example类指定查询列，通过selectProperties方法指定查询列
+     * 根据Example条件进行查询，这个查询支持通过Example类指定查询列，通过selectProperties方法指定查询列
      * @param example
      * @return java.util.List<T>
      * @author Wang926454
@@ -127,7 +126,7 @@ public interface IBaseService<T> extends UserDetailsService {
     List<T> selectByExample(Object example);
 
     /**
-     * TODO：根据Example条件进行查询总数
+     * 根据Example条件进行查询总数
      * @param example
      * @return int
      * @author Wang926454
@@ -136,7 +135,7 @@ public interface IBaseService<T> extends UserDetailsService {
     int selectCountByExample(Object example);
 
     /**
-     * TODO：根据Example条件更新实体record包含的全部属性，null值会被更新
+     * 根据Example条件更新实体record包含的全部属性，null值会被更新
      * @param record
 	 * @param example
      * @return int
@@ -146,7 +145,7 @@ public interface IBaseService<T> extends UserDetailsService {
     int updateByExample(@Param("record") T record, @Param("example") Object example);
 
     /**
-     * TODO：根据Example条件更新实体record包含的不是null的属性值
+     * 根据Example条件更新实体record包含的不是null的属性值
      * @param record
 	 * @param example
      * @return int
@@ -156,7 +155,7 @@ public interface IBaseService<T> extends UserDetailsService {
     int updateByExampleSelective(@Param("record") T record, @Param("example") Object example);
 
     /**
-     * TODO：根据Example条件删除数据
+     * 根据Example条件删除数据
      * @param example
      * @return int
      * @author Wang926454
@@ -166,7 +165,7 @@ public interface IBaseService<T> extends UserDetailsService {
 
     // RowBounds
     /**
-     * TODO：根据实体属性和RowBounds进行分页查询
+     * 根据实体属性和RowBounds进行分页查询
      * @param record
 	 * @param rowBounds
      * @return java.util.List<T>
@@ -176,7 +175,7 @@ public interface IBaseService<T> extends UserDetailsService {
     List<T> selectByRowBounds(T record, RowBounds rowBounds);
 
     /**
-     * TODO：根据example条件和RowBounds进行分页查询
+     * 根据example条件和RowBounds进行分页查询
      * @param example
 	 * @param rowBounds
      * @return java.util.List<T>

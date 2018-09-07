@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO：
+ *
  * @author Wang926454
  * @date 2018/8/9 15:45
  */
@@ -26,7 +26,7 @@ public class UserController {
     }
 
     /**
-     * TODO：获取所有用户
+     * 获取所有用户
      * @param 
      * @return java.util.Map<java.lang.String,java.lang.Object>
      * @author Wang926454
@@ -42,7 +42,7 @@ public class UserController {
     }
 
     /**
-     * TODO：获取指定用户
+     * 获取指定用户
      * @param id
      * @return java.util.Map<java.lang.String,java.lang.Object>
      * @author Wang926454
@@ -58,7 +58,7 @@ public class UserController {
     }
 
     /**
-     * TODO：新增用户
+     * 新增用户
      * @param user
      * @return java.util.Map<java.lang.String,java.lang.Object>
      * @author Wang926454
@@ -76,7 +76,7 @@ public class UserController {
     }
 
     /**
-     * TODO：更新用户
+     * 更新用户
      * @param user
      * @return java.util.Map<java.lang.String,java.lang.Object>
      * @author Wang926454
@@ -93,7 +93,7 @@ public class UserController {
     }
 
     /**
-     * TODO：删除用户
+     * 删除用户
      * @param id
      * @return java.util.Map<java.lang.String,java.lang.Object>
      * @author Wang926454

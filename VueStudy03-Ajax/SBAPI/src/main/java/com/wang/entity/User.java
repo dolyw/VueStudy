@@ -4,7 +4,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 /**
- * TODO：User
+ * User
  * @author Wang926454
  * @date 2018/7/31 16:11
  */

@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collections;
 
 /**
- * TODO：自定义MyUserDetails
+ * 自定义MyUserDetails
  * @author Wang926454
  * @date 2018/8/14 16:48
  */

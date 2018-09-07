@@ -7,14 +7,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.List;
 
 /**
- * TODO：
+ *
  * @author Wang926454
  * @date 2018/8/9 15:44
  */
 public interface IUserService extends IBaseService<User>{
 
     /**
-     * TODO：重写的UserDetails方法
+     * 重写的UserDetails方法
      * @param s
      * @return org.springframework.security.core.userdetails.UserDetails
      * @author Wang926454

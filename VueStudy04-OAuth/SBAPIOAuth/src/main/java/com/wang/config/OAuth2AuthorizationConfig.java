@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 /**
- * TODO：OAuth2配置
+ * OAuth2配置
  * @author Wang926454
  * @date 2018/8/14 15:59
  */

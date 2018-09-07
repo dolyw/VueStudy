@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
- * TODO：SpringBoot全局支持CORS（跨源请求）的配置
+ * SpringBoot全局支持CORS（跨源请求）的配置
  * @author Wang926454
  * @date 2018/8/9 17:28
  */

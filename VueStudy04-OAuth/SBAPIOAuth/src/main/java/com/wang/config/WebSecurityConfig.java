@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 /**
- * TODO：配置服务器允许/oauth/token的option方法，因为/oauth/token接口是先发一个option请求，然后再发正式post请求，如果是option接口不被允许，就返回401
+ * 配置服务器允许/oauth/token的option方法，因为/oauth/token接口是先发一个option请求，然后再发正式post请求，如果是option接口不被允许，就返回401
  * @author Wang926454
  * @date 2018/8/15 16:48
  */
