@@ -2,6 +2,7 @@ package com.wang.service;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * @author Wang926454
  * @date 2018/8/9 15:45
  */
-public interface IBaseService<T> {
+public interface IBaseService<T>  extends UserDetailsService {
 
     // Select
     /**
