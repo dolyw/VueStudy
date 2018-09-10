@@ -8,7 +8,11 @@
 
 #### 软件架构
 
-1. Vue 2.0 + Vue-Router + Webpack + ES6 + Element-UI
+1. Webpack打包工具
+2. Vue 2.0核心框架
+3. Vue-Router + Axios
+4. ES6 + Eslint语法检查
+5. Element-UI
 
 #### 安装教程
 
