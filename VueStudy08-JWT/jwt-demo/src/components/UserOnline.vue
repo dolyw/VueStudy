@@ -4,9 +4,9 @@
           <el-table-column type="index" align="center" width="80"></el-table-column>
           <!-- <el-table-column prop="id" label="ID" align="center" width="80"></el-table-column> -->
           <el-table-column prop="account" label="帐号" align="center" width="200"></el-table-column>
-          <el-table-column prop="password" label="密码" align="center" width="200"></el-table-column>
           <el-table-column prop="username" label="用户名" align="center" width="200"></el-table-column>
           <el-table-column prop="regTime" label="注册日期" align="center" width="300"></el-table-column>
+          <el-table-column prop="loginTime" label="登录时间" align="center" width="300"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button size="mini" type="danger" @click="delUser(scope.row.id)" icon="el-icon-delete" circle></el-button>
