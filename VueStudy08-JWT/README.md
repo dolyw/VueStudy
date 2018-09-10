@@ -4,10 +4,15 @@
 
 #### 项目介绍
 
-1. 该项目为测试JWT使用
+1. 前后端分离，通过Token进行数据交互
 
-## Build Setup
+#### 软件架构
 
+1. Vue 2.0 + Vue-Router + Webpack + ES6 + Element-UI
+
+#### 安装教程
+
+1. 运行命令
 ``` bash
 # install dependencies
 npm install
@@ -18,17 +23,16 @@ npm run dev
 # build for production with minification
 npm run build
 
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
+# 访问: http://localhost:8088
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+#### 使用说明
+
+1. 该项目为测试JWT使用
+
+#### 参与贡献
+
+1. Fork 本项目
+2. 新建 Feat_xxx 分支
+3. 提交代码
+4. 新建 Pull Request
