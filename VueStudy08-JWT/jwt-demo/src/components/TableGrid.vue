@@ -16,6 +16,17 @@
             </template>
           </el-table-column>
         </el-table>
+        <div align="center" style="margin-top:10px;">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[1, 5, 10, 15]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalCount">
+          </el-pagination>
+        </div>
     </div>
 </template>
 <script>
@@ -25,7 +36,14 @@ export default {
   name: 'TableGrid',
   data () {
     return {
-      tableData: []
+      // Table数据
+      tableData: [],
+      // 当前页
+      currentPage: 1,
+      // 每页条数
+      pageSize: 5,
+      // 总条数
+      totalCount: 25
     }
   },
   props: {
@@ -63,7 +81,7 @@ export default {
           console.log(response)
           sessionStorage.setItem('accessToken', response.data.data)
           this.$root.accessToken = response.data.data
-          this.getUsers()
+          this.getUsers(this.currentPage, this.pageSize)
           this.$message({
             showClose: true,
             message: response.data.msg
@@ -90,12 +108,18 @@ export default {
         message: '注销成功'
       })
     },
-    getUsers: function () {
-      this.$axios.get('user')
+    getUsers: function (pageNum, pageSize) {
+      this.$axios.get('user', {
+        params: {
+          page: pageNum,
+          rows: pageSize
+        }
+      })
         .then(response => {
-          console.log(response)
-          console.log(this)
-          this.$set(this, 'tableData', response.data.data)
+          console.log(response.data.data.data)
+          console.log(response.data.data.count)
+          this.$set(this, 'tableData', response.data.data.data)
+          this.$set(this, 'totalCount', response.data.data.count)
         })
         .catch(error => {
           console.log(error)
@@ -112,7 +136,7 @@ export default {
       this.$axios.delete(`user/${id}`)
         .then(response => {
           console.log(response.data.code)
-          this.getUsers()
+          this.getUsers(this.currentPage, this.pageSize)
           this.$message({
             showClose: true,
             message: response.data.msg
@@ -136,7 +160,7 @@ export default {
         this.$axios.put('user', user)
           .then(response => {
             console.log(response.data.code)
-            this.getUsers()
+            this.getUsers(this.currentPage, this.pageSize)
           })
           .catch(error => {
             console.log(error.message)
@@ -154,7 +178,7 @@ export default {
         this.$axios.post('user', user)
           .then(response => {
             console.log(response.data.code)
-            this.getUsers()
+            this.getUsers(this.currentPage, this.pageSize)
           })
           .catch(error => {
             console.log(error.message)
@@ -192,21 +216,22 @@ export default {
           // always executed
         })
     },
-    handleEdit: function (index, row) {
-      this.$message(index + '=' + row.name)
+    // 每页条数改变
+    handleSizeChange: function (pageSize) {
+      this.pageSize = pageSize
+      this.getUsers(this.currentPage, this.pageSize)
+    },
+    // 当前页数改变
+    handleCurrentChange: function (currentPage) {
+      this.currentPage = currentPage
+      this.getUsers(this.currentPage, this.pageSize)
     }
   },
   // 启动时就执行
   mounted: function () {
-    // Token不为空才进行查询用户列表
-    /* var accessToken = sessionStorage.getItem('accessToken')
-    this.$root.accessToken = accessToken
-    if (typeof (accessToken) !== 'undefined' && accessToken != null && accessToken !== '') {
-      this.getUsers()
-    } */
     var accessToken = sessionStorage.getItem('accessToken')
     this.$root.accessToken = accessToken
-    this.getUsers()
+    this.getUsers(this.currentPage, this.pageSize)
   },
   // 组件创建时启动监听
   created: function () {

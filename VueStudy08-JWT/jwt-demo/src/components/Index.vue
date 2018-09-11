@@ -8,9 +8,9 @@
       <el-container>
         <el-aside width="200px">
           <el-menu
-              default-active="/index/userList"
+              default-active="defaultActive"
               class="el-menu-vertical-demo"
-              active-text-color="#ffd04b">
+              active-text-color="#909399" router>
             <el-submenu index="1">
               <template slot="title">
                 <i class="el-icon-location"></i>
@@ -36,8 +36,8 @@
                 <span>用户管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="userList"><router-link to="/index/userList">用户列表</router-link></el-menu-item>
-                <el-menu-item index="userOnline"><router-link to="/index/userOnline">在线用户</router-link></el-menu-item>
+                <el-menu-item index="/index/userList">用户列表</el-menu-item>
+                <el-menu-item index="/index/userOnline">在线用户</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-menu-item index="4">
@@ -61,6 +61,11 @@ export default {
   name: 'App',
   components: {
     Login
+  },
+  computed: {
+    defaultActive: function () {
+      return this.$route.path.replace('/', '')
+    }
   }
 }
 </script>
