@@ -199,6 +199,8 @@ export default {
         .then(response => {
           console.log(response.data.code)
           console.log(response.data.data)
+          console.log(this.$root.accessToken)
+          console.log(sessionStorage.getItem('accessToken'))
           // this.$refs.gridTable.addOrUpdate.$set(this, 'newUser', response.data.data);
           // this.$set(this.$refs.gridTable.$refs.addOrUpdate, 'newUser', response.data.data)
           this.$root.eventHub.$emit('findUserById', response.data.data)

@@ -2,10 +2,16 @@
 
 > 后端API地址:[https://github.com/wang926454/SBAPIJWT](https://github.com/wang926454/SBAPIJWT)
 
+#### 搭建参考
+
+1. 感谢天降风云的Vue2.0+ElementUI+PageHelper实现的表格分页:[https://blog.csdn.net/u012907049/article/details/70237457](https://blog.csdn.net/u012907049/article/details/70237457)
+2. 感谢yaxx的Vuejs之axios获取Http响应头:[https://segmentfault.com/a/1190000009125333](https://segmentfault.com/a/1190000009125333)
+
 #### 项目介绍
 
 1. 前后端分离
 2. 采用Token无状态认证机制
+3. Token自动刷新
 
 #### 软件架构
 
