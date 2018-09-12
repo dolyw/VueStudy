@@ -6,12 +6,14 @@
 
 1. 感谢天降风云的Vue2.0+ElementUI+PageHelper实现的表格分页:[https://blog.csdn.net/u012907049/article/details/70237457](https://blog.csdn.net/u012907049/article/details/70237457)
 2. 感谢yaxx的Vuejs之axios获取Http响应头:[https://segmentfault.com/a/1190000009125333](https://segmentfault.com/a/1190000009125333)
+2. 感谢js-cookie的js-cookie:[https://github.com/js-cookie/js-cookie](https://github.com/js-cookie/js-cookie)
 
 #### 项目介绍
 
 1. 前后端分离
 2. 采用Token无状态认证机制
 3. Token自动刷新
+4. Token使用Cookie存取(js-cookie)
 
 #### 软件架构
 
