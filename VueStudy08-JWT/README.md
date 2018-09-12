@@ -6,7 +6,12 @@
 
 1. 感谢天降风云的Vue2.0+ElementUI+PageHelper实现的表格分页:[https://blog.csdn.net/u012907049/article/details/70237457](https://blog.csdn.net/u012907049/article/details/70237457)
 2. 感谢yaxx的Vuejs之axios获取Http响应头:[https://segmentfault.com/a/1190000009125333](https://segmentfault.com/a/1190000009125333)
-2. 感谢js-cookie的js-cookie:[https://github.com/js-cookie/js-cookie](https://github.com/js-cookie/js-cookie)
+3. 感谢枫似的vue2.0的Element UI的表格table列时间戳格式化:[https://blog.csdn.net/x_lord/article/details/70225481](https://blog.csdn.net/x_lord/article/details/70225481)
+
+##### 工具使用
+
+1. js-cookie(Cookie工具):[https://github.com/js-cookie/js-cookie](https://github.com/js-cookie/js-cookie)
+2. moment(日期格式化工具):[http://momentjs.com/](http://momentjs.com/)
 
 #### 项目介绍
 

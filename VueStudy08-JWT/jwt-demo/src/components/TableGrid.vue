@@ -8,7 +8,7 @@
           <el-table-column prop="account" label="帐号" align="center" width="200"></el-table-column>
           <el-table-column prop="password" label="密码" align="center" width="200"></el-table-column>
           <el-table-column prop="username" label="用户名" align="center" width="200"></el-table-column>
-          <el-table-column prop="regTime" label="注册日期" align="center" width="300"></el-table-column>
+          <el-table-column prop="regTime" label="注册日期" align="center" width="300" :formatter="dateFormat"></el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
               <el-button size="mini" @click="findUserById(scope.row.id)" icon="el-icon-edit" circle></el-button>
@@ -226,6 +226,14 @@ export default {
     handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage
       this.getUsers(this.currentPage, this.pageSize)
+    },
+    // 时间格式化
+    dateFormat: function (row, column) {
+      var date = row[column.property]
+      if (!date || date === '') {
+        return ''
+      }
+      return this.moment(date).format('YYYY-MM-DD HH:mm:ss')
     }
   },
   // 启动时就执行

@@ -17,6 +17,9 @@ import axios from 'axios'
 // 引入js-cookie
 import cookies from 'js-cookie'
 
+// 引入moment
+import moment from 'moment'
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
@@ -26,6 +29,8 @@ Vue.prototype.util = util
 Vue.prototype.$axios = axios
 
 Vue.prototype.cookies = cookies
+
+Vue.prototype.moment = moment
 
 /* eslint-disable no-new */
 new Vue({
@@ -42,6 +47,11 @@ new Vue({
   created: function () {
     // axios baseURL
     this.$axios.defaults.baseURL = 'http://localhost:8080'
+    this.$axios.defaults.timeout = 10000
+
+    /* if (cookies.get('accessToken') && cookies.get('accessToken') !== '') {
+      axios.defaults.headers.common['Authorization'] = cookies.get('accessToken')
+    } */
 
     // 请求拦截器设置headers
     this.$axios.interceptors.request.use(config => {
@@ -65,8 +75,9 @@ new Vue({
       // console.log(response.headers)
       // console.log(response.headers.authorization)
       if (accessToken && accessToken !== '') {
-        this.cookies.remove('accessToken', { path: '/' })
-        this.cookies.set('accessToken', accessToken, { expires: 1, path: '/' })
+        // 加this死活报错
+        // this.cookies.set('accessToken', accessToken, { expires: 1, path: '/' })
+        cookies.set('accessToken', accessToken, { expires: 1, path: '/' })
       }
       return response
     }, function (error) {

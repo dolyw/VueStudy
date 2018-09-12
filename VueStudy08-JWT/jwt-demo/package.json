@@ -18,6 +18,7 @@
     "babel-runtime": "^6.26.0",
     "element-ui": "^2.4.6",
     "js-cookie": "^2.2.0",
+    "moment": "^2.22.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },

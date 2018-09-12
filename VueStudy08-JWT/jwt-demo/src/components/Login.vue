@@ -2,10 +2,10 @@
   <div class="hello">
     <el-row>
       <el-col :span="22"><h1>{{ msg }}</h1></el-col>
-      <el-col :span="1" style="margin-top:10px;" v-show="this.$root.loginStatus == 0">
+      <el-col :span="1" style="margin-top:10px;" v-show="this.cookies.get('accessToken') == null">
         <el-button type="info" @click="loginFormVisible = true">登录</el-button>
       </el-col>
-      <el-col :span="1" style="margin-top:10px;" v-show="this.$root.loginStatus == 1">
+      <el-col :span="1" style="margin-top:10px;" v-show="this.cookies.get('accessToken') != null">
         <el-button type="info" @click="logout">注销</el-button>
       </el-col>
     </el-row>
@@ -43,6 +43,7 @@ export default {
   },
   methods: {
     login: function () {
+      this.cookies.remove('accessToken', { path: '/' })
       this.$root.eventHub.$emit('login', this.loginModel)
       this.loginFormVisible = false
       this.loginModel = {
