@@ -100,14 +100,6 @@ export default {
           // always executed
         })
     },
-    logout: function () {
-      this.cookies.remove('accessToken', { path: '/' })
-      this.$root.loginStatus = 0
-      this.$message({
-        showClose: true,
-        message: '注销成功(Logout Success.)'
-      })
-    },
     getUsers: function (pageNum, pageSize) {
       this.$axios.get('user', {
         params: {
@@ -244,13 +236,11 @@ export default {
   created: function () {
     this.$root.eventHub.$on('addOrUpdate', this.addOrUpdate)
     this.$root.eventHub.$on('login', this.login)
-    this.$root.eventHub.$on('logout', this.logout)
   },
   // 最好在组件销毁前清除监听
   beforeDestroy: function () {
     this.$root.eventHub.$off('addOrUpdate', this.addOrUpdate)
     this.$root.eventHub.$off('login', this.login)
-    this.$root.eventHub.$off('logout', this.logout)
   }
 }
 </script>

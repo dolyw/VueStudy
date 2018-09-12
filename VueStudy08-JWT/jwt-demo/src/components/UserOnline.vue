@@ -50,14 +50,6 @@ export default {
           // always executed
         })
     },
-    logout: function () {
-      this.cookies.remove('accessToken', { path: '/' })
-      this.$root.loginStatus = 0
-      this.$message({
-        showClose: true,
-        message: '注销成功(Logout Success.)'
-      })
-    },
     getUsers: function () {
       this.$axios.get('user/online')
         .then(response => {
@@ -115,12 +107,10 @@ export default {
   // 组件创建时启动监听
   created: function () {
     this.$root.eventHub.$on('login', this.login)
-    this.$root.eventHub.$on('logout', this.logout)
   },
   // 最好在组件销毁前清除监听
   beforeDestroy: function () {
     this.$root.eventHub.$off('login', this.login)
-    this.$root.eventHub.$off('logout', this.logout)
   }
 }
 </script>

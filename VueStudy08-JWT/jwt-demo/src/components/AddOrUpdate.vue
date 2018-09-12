@@ -4,13 +4,13 @@
       <el-form :model="newUser">
         <el-input type="hidden" v-model="newUser.id"></el-input>
         <el-form-item label="帐号" :label-width="formLabelWidth">
-          <el-input v-model="newUser.account" auto-complete="off"></el-input>
+          <el-input v-model.trim="newUser.account" auto-complete="off" @keyup.enter.native="addOrUpdate"></el-input>
         </el-form-item>
         <el-form-item label="密码" :label-width="formLabelWidth">
-          <el-input type="password" v-model="newUser.password" auto-complete="off"></el-input>
+          <el-input type="password" v-model.trim="newUser.password" auto-complete="off" @keyup.enter.native="addOrUpdate"></el-input>
         </el-form-item>
         <el-form-item label="用户名" :label-width="formLabelWidth">
-          <el-input v-model="newUser.username" auto-complete="off"></el-input>
+          <el-input v-model.trim="newUser.username" auto-complete="off" @keyup.enter.native="addOrUpdate"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -38,21 +38,21 @@ export default {
   methods: {
     addOrUpdate: function () {
       // 使用事件派发
-      if (this.newUser.account == null || this.newUser.account === '') {
+      if (!this.newUser.account || this.newUser.account === '') {
         this.$message({
           showClose: true,
           message: '帐号不能为空'
         })
         return
       }
-      if (this.newUser.password == null || this.newUser.password === '') {
+      if (!this.newUser.password || this.newUser.password === '') {
         this.$message({
           showClose: true,
           message: '密码不能为空'
         })
         return
       }
-      if (this.newUser.username == null || this.newUser.username === '') {
+      if (!this.newUser.username || this.newUser.username === '') {
         this.$message({
           showClose: true,
           message: '用户名不能为空'
