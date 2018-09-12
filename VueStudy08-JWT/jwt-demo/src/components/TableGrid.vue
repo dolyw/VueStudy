@@ -79,8 +79,8 @@ export default {
       this.$axios.post('user/login', loginModel)
         .then(response => {
           console.log(response)
-          sessionStorage.setItem('accessToken', response.data.data)
-          this.$root.accessToken = response.data.data
+          this.cookies.set('accessToken', response.data.data, { expires: 1, path: '/' })
+          this.$root.loginStatus = 1
           this.getUsers(this.currentPage, this.pageSize)
           this.$message({
             showClose: true,
@@ -101,11 +101,11 @@ export default {
         })
     },
     logout: function () {
-      sessionStorage.removeItem('accessToken')
-      this.$root.accessToken = null
+      this.cookies.remove('accessToken', { path: '/' })
+      this.$root.loginStatus = 0
       this.$message({
         showClose: true,
-        message: '注销成功'
+        message: '注销成功(Logout Success.)'
       })
     },
     getUsers: function (pageNum, pageSize) {
@@ -199,8 +199,7 @@ export default {
         .then(response => {
           console.log(response.data.code)
           console.log(response.data.data)
-          console.log(this.$root.accessToken)
-          console.log(sessionStorage.getItem('accessToken'))
+          console.log(this.cookies.get('accessToken'))
           // this.$refs.gridTable.addOrUpdate.$set(this, 'newUser', response.data.data);
           // this.$set(this.$refs.gridTable.$refs.addOrUpdate, 'newUser', response.data.data)
           this.$root.eventHub.$emit('findUserById', response.data.data)
@@ -231,8 +230,6 @@ export default {
   },
   // 启动时就执行
   mounted: function () {
-    var accessToken = sessionStorage.getItem('accessToken')
-    this.$root.accessToken = accessToken
     this.getUsers(this.currentPage, this.pageSize)
   },
   // 组件创建时启动监听

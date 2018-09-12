@@ -29,8 +29,8 @@ export default {
       this.$axios.post('user/login', loginModel)
         .then(response => {
           console.log(response)
-          sessionStorage.setItem('accessToken', response.data.data)
-          this.$root.accessToken = response.data.data
+          this.cookies.set('accessToken', response.data.data, { expires: 1, path: '/' })
+          this.$root.loginStatus = 1
           this.getUsers()
           this.$message({
             showClose: true,
@@ -51,11 +51,11 @@ export default {
         })
     },
     logout: function () {
-      sessionStorage.removeItem('accessToken')
-      this.$root.accessToken = null
+      this.cookies.remove('accessToken', { path: '/' })
+      this.$root.loginStatus = 0
       this.$message({
         showClose: true,
-        message: '注销成功'
+        message: '注销成功(Logout Success.)'
       })
     },
     getUsers: function () {
@@ -102,8 +102,6 @@ export default {
   },
   // 启动时就执行
   mounted: function () {
-    var accessToken = sessionStorage.getItem('accessToken')
-    this.$root.accessToken = accessToken
     this.getUsers()
   },
   // 组件创建时启动监听

@@ -14,6 +14,9 @@ import util from '../util/util.js'
 // 引入Axios
 import axios from 'axios'
 
+// 引入js-cookie
+import cookies from 'js-cookie'
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
@@ -21,6 +24,8 @@ Vue.use(ElementUI)
 Vue.prototype.util = util
 
 Vue.prototype.$axios = axios
+
+Vue.prototype.cookies = cookies
 
 /* eslint-disable no-new */
 new Vue({
@@ -31,8 +36,8 @@ new Vue({
   data: {
     // 组件使用事件中心进行通信
     eventHub: new Vue(),
-    // Token
-    accessToken: null
+    // 控制显示登录还是注销 0-登录 1-注销
+    loginStatus: 0
   },
   created: function () {
     // axios baseURL
@@ -41,11 +46,11 @@ new Vue({
     // 请求拦截器设置headers
     this.$axios.interceptors.request.use(config => {
       // Do something before request is sent
-      var accessToken = sessionStorage.getItem('accessToken')
+      var accessToken = this.cookies.get('accessToken')
       // console.log(accessToken);
       if (accessToken && accessToken !== '') {
         // console.log('Authorization');
-        config.headers.common['Authorization'] = sessionStorage.getItem('accessToken')
+        config.headers.common['Authorization'] = accessToken
       }
       return config
     }, error => {
@@ -60,8 +65,8 @@ new Vue({
       // console.log(response.headers)
       // console.log(response.headers.authorization)
       if (accessToken && accessToken !== '') {
-        sessionStorage.setItem('accessToken', accessToken)
-        App.accessToken = accessToken
+        this.cookies.remove('accessToken', { path: '/' })
+        this.cookies.set('accessToken', accessToken, { expires: 1, path: '/' })
       }
       return response
     }, function (error) {
