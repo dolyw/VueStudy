@@ -41,14 +41,20 @@ new Vue({
   data: {
     // 组件使用事件中心进行通信
     eventHub: new Vue(),
-    // 控制显示登录还是注销 0-登录 1-注销
-    loginStatus: 0
+    // 控制显示登录还是注销
+    loginStatus: true
   },
   created: function () {
     // axios baseURL
     this.$axios.defaults.baseURL = 'http://localhost:8080'
     this.$axios.defaults.timeout = 10000
 
+    var accessToken = this.cookies.get('accessToken')
+    if (accessToken && accessToken !== '') {
+      this.$root.loginStatus = false
+    } else {
+      this.$root.loginStatus = true
+    }
     /* if (cookies.get('accessToken') && cookies.get('accessToken') !== '') {
       axios.defaults.headers.common['Authorization'] = cookies.get('accessToken')
     } */
@@ -69,18 +75,16 @@ new Vue({
     })
 
     // 响应拦截器获取headers，刷新Token
-    this.$axios.interceptors.response.use(function (response) {
+    this.$axios.interceptors.response.use(response => {
       // Do something with response data
       var accessToken = response.headers['authorization']
       // console.log(response.headers)
       // console.log(response.headers.authorization)
       if (accessToken && accessToken !== '') {
-        // 加this死活报错
-        // this.cookies.set('accessToken', accessToken, { expires: 1, path: '/' })
-        cookies.set('accessToken', accessToken, { expires: 1, path: '/' })
+        this.cookies.set('accessToken', accessToken, { expires: 1, path: '/' })
       }
       return response
-    }, function (error) {
+    }, error => {
       // Do something with response error
       return Promise.reject(error)
     })

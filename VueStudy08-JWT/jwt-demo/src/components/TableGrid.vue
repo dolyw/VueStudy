@@ -80,7 +80,7 @@ export default {
         .then(response => {
           console.log(response)
           this.cookies.set('accessToken', response.data.data, { expires: 1, path: '/' })
-          this.$root.loginStatus = 1
+          this.$root.loginStatus = false
           this.getUsers(this.currentPage, this.pageSize)
           this.$message({
             showClose: true,

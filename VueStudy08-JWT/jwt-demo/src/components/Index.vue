@@ -66,14 +66,6 @@ export default {
     defaultActive: function () {
       return this.$route.path.replace('/', '')
     }
-  },
-  created: function () {
-    var accessToken = this.cookies.get('accessToken')
-    if (accessToken && accessToken !== '') {
-      this.$root.loginStatus = 1
-    } else {
-      this.$root.loginStatus = 0
-    }
   }
 }
 </script>
