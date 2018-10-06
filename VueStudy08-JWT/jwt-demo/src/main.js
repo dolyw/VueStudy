@@ -74,7 +74,7 @@ new Vue({
       return Promise.reject(error)
     })
 
-    // 响应拦截器获取headers，刷新Token
+    // 响应拦截器获取headers，设置(刷新)Token
     this.$axios.interceptors.response.use(response => {
       // Do something with response data
       var accessToken = response.headers['authorization']

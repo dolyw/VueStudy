@@ -79,7 +79,7 @@ export default {
       this.$axios.post('user/login', loginModel)
         .then(response => {
           console.log(response)
-          this.cookies.set('accessToken', response.data.data, { expires: 1, path: '/' })
+          // this.cookies.set('accessToken', response.data.data, { expires: 1, path: '/' })
           this.$root.loginStatus = false
           this.getUsers(this.currentPage, this.pageSize)
           this.$message({
