@@ -9,7 +9,8 @@ export default{
         if (typeof p[i] === 'object') {
           // 如果p[i]是数组，则创建一个新数组
           // 如果p[i]是普通对象，则创建一个新对象
-          c[i] = Array.isArray(p[i]) ? [] : {}
+          // c[i] = Array.isArray(p[i]) ? [] : {}
+          c[i] = Array.isArray(p[i]) ? [] : p[i] != null ? {} : null
           // 递归拷贝复杂类型的属性
           this.copyProperty(p[i], c[i])
         } else {

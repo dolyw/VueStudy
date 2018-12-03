@@ -1,6 +1,6 @@
 # jwt-demo
 
-> 后端API地址:[https://github.com/wang926454/SBAPIJWT](https://github.com/wang926454/SBAPIJWT)
+> 后端API地址:[https://github.com/wang926454/ShiroJwt](https://github.com/wang926454/ShiroJwt)
 
 #### 搭建参考
 
