@@ -1,5 +1,6 @@
-// 建立公共方法，属性复制
+// 建立公共方法
 export default{
+  // 属性复制
   copyProperty: function (p, c) {
     c = c || {}
     for (var i in p) {
@@ -20,5 +21,9 @@ export default{
       }
     }
     return c
+  },
+  // 手机端返回true，PC端返回false
+  isMobile: function () {
+    return navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
   }
 }
