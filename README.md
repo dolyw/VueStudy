@@ -1,5 +1,10 @@
 # VueStudy
 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/wang926454/VueStudy/pulls)
+[![GitHub stars](https://img.shields.io/github/stars/wang926454/VueStudy.svg?style=social&label=Stars)](https://github.com/wang926454/VueStudy)
+[![GitHub forks](https://img.shields.io/github/forks/wang926454/VueStudy.svg?style=social&label=Fork)](https://github.com/wang926454/VueStudy)
+
 > A Vue.js project
 
 > 主要参考官方Vue.js文档:[https://cn.vuejs.org/v2/guide/installation.html](https://cn.vuejs.org/v2/guide/installation.html)
