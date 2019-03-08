@@ -1,30 +1,58 @@
 # jwt-demo
 
-> A Vue.js project
+> 后端API地址:[https://github.com/wang926454/ShiroJwt](https://github.com/wang926454/ShiroJwt)
 
-## Build Setup
+#### 搭建参考
 
+1. 基于vue-admin-template模板搭建:[https://github.com/PanJiaChen/vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
+
+#### 完成进度
+
+- [x] vue-admin-template作为基础架子
+- [ ] 用户列表
+- [ ] 用户列表的CRUD
+- [ ] 在线用户列表
+- [ ] 在线用户踢出
+- [ ] ~~完成~~
+
+#### 项目介绍
+
+1. 前后端分离
+2. 采用Token无状态认证机制
+3. Token自动刷新
+
+#### 软件架构
+
+1. Webpack打包工具
+2. Vue 2.0核心框架
+3. Vue-Router + Axios
+4. ES6 + Eslint语法检查
+5. Element-UI
+
+#### 安装教程
+
+1. 运行命令
 ``` bash
-# install dependencies
+# Install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# Serve with hot reload at localhost:9528
 npm run dev
 
-# build for production with minification
+# Build for production with minification
 npm run build
 
-# build for production and view the bundle analyzer report
+# Build for production and view the bundle analyzer report
 npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+#### 使用说明
+
+1. 该项目为测试JWT使用
+
+#### 参与贡献
+
+1. Fork 本项目
+2. 新建 Feat_xxx 分支
+3. 提交代码
+4. 新建 Pull Request
