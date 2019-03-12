@@ -42,20 +42,20 @@ export const constantRouterMap = [
   {
     path: '/user',
     component: Layout,
-    redirect: '/user/userList',
+    redirect: '/user/list',
     name: '用户管理',
     meta: { title: '用户管理', icon: 'user' },
     children: [
       {
-        path: 'userList',
-        name: 'userList',
-        component: () => import('@/views/table/index'),
+        path: 'list',
+        name: 'List',
+        component: () => import('@/views/user/list'),
         meta: { title: '用户列表', icon: 'table' }
       },
       {
-        path: 'userOnline',
-        name: 'userOnline',
-        component: () => import('@/views/tree/index'),
+        path: 'online',
+        name: 'Online',
+        component: () => import('@/views/user/online'),
         meta: { title: '在线用户', icon: 'tree' }
       }
     ]

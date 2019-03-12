@@ -33,26 +33,31 @@
         <span> password: admin</span>
       </div>
       <div class="tips">
-        <span style="margin-right:20px;">account: admin</span>
-        <span> password: admin</span>
+        <span style="margin-right:20px;">account: wang</span>
+        <span> password: wang</span>
       </div>
       <div class="tips">
-        <span style="margin-right:20px;">account: admin</span>
-        <span> password: admin</span>
+        <span style="margin-right:20px;">account: guest</span>
+        <span> password: guest</span>
       </div>
     </el-form>
   </div>
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
+// import { isvalidUsername } from '@/utils/validate'
 
 export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
+      /* if (!isvalidUsername(value)) {
         callback(new Error('请输入正确的用户名'))
+      } else {
+        callback()
+      } */
+      if (!value) {
+        callback(new Error('账号不能为空'))
       } else {
         callback()
       }
