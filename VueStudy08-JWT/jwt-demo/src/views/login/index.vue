@@ -2,11 +2,11 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <h3 class="title">vue-admin-template</h3>
-      <el-form-item prop="username">
+      <el-form-item prop="account">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.username" name="username" type="text" auto-complete="on" placeholder="username" />
+        <el-input v-model.trim="loginForm.account" name="account" type="text" auto-complete="on" placeholder="account" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
@@ -14,7 +14,7 @@
         </span>
         <el-input
           :type="pwdType"
-          v-model="loginForm.password"
+          v-model.trim="loginForm.password"
           name="password"
           auto-complete="on"
           placeholder="password"
@@ -29,7 +29,15 @@
         </el-button>
       </el-form-item>
       <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
+        <span style="margin-right:20px;">account: admin</span>
+        <span> password: admin</span>
+      </div>
+      <div class="tips">
+        <span style="margin-right:20px;">account: admin</span>
+        <span> password: admin</span>
+      </div>
+      <div class="tips">
+        <span style="margin-right:20px;">account: admin</span>
         <span> password: admin</span>
       </div>
     </el-form>
@@ -50,19 +58,19 @@ export default {
       }
     }
     const validatePass = (rule, value, callback) => {
-      if (value.length < 5) {
-        callback(new Error('密码不能小于5位'))
+      if (value.length < 3) {
+        callback(new Error('密码不能小于3位'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: 'admin',
+        account: 'admin',
         password: 'admin'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        account: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
       loading: false,

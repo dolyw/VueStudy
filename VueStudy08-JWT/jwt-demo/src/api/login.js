@@ -1,27 +1,26 @@
 import request from '@/utils/request'
 
-export function login(username, password) {
+const baseURL = process.env.BASE_API
+
+export function login(data) {
   return request({
-    url: '/user/login',
+    url: baseURL + '/user/login',
     method: 'post',
-    data: {
-      username,
-      password
-    }
+    data
   })
 }
 
 export function getInfo(token) {
   return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+    url: baseURL + '/user/article',
+    method: 'get'/* ,
+    params: { token } */
   })
 }
 
 export function logout() {
   return request({
-    url: '/user/logout',
-    method: 'post'
+    url: baseURL + '/user/article',
+    method: 'get'
   })
 }

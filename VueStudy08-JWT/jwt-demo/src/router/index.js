@@ -30,12 +30,35 @@ export const constantRouterMap = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    name: 'Dashboard',
+    name: '主页',
     hidden: true,
+    meta: { title: '主页', icon: 'example' },
     children: [{
       path: 'dashboard',
       component: () => import('@/views/dashboard/index')
     }]
+  },
+
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/userList',
+    name: '用户管理',
+    meta: { title: '用户管理', icon: 'user' },
+    children: [
+      {
+        path: 'userList',
+        name: 'userList',
+        component: () => import('@/views/table/index'),
+        meta: { title: '用户列表', icon: 'table' }
+      },
+      {
+        path: 'userOnline',
+        name: 'userOnline',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '在线用户', icon: 'tree' }
+      }
+    ]
   },
 
   {
@@ -44,6 +67,7 @@ export const constantRouterMap = [
     redirect: '/example/table',
     name: 'Example',
     meta: { title: 'Example', icon: 'example' },
+    hidden: true,
     children: [
       {
         path: 'table',
@@ -63,6 +87,7 @@ export const constantRouterMap = [
   {
     path: '/form',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -82,6 +107,7 @@ export const constantRouterMap = [
       title: 'Nested',
       icon: 'nested'
     },
+    hidden: true,
     children: [
       {
         path: 'menu1',
@@ -132,12 +158,23 @@ export const constantRouterMap = [
   },
 
   {
-    path: 'external-link',
+    path: 'external-link1',
     component: Layout,
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        path: 'https://github.com/wang926454/VueStudy/tree/master/VueStudy08-JWT',
+        meta: { title: '前端地址', icon: 'link' }
+      }
+    ]
+  },
+
+  {
+    path: 'external-link2',
+    component: Layout,
+    children: [
+      {
+        path: 'https://github.com/wang926454/ShiroJwt',
+        meta: { title: '后台地址', icon: 'link' }
       }
     ]
   },
@@ -146,7 +183,7 @@ export const constantRouterMap = [
 ]
 
 export default new Router({
-  // mode: 'history', //后端支持可开
+  // mode: 'history', // 后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })

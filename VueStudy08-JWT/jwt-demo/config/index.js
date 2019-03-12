@@ -9,7 +9,17 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    /* proxyTable: {}, */
+    // 代理列表, 是否开启代理通过[./dev.env.js]配置
+    proxyTable: process.env.OPEN_PROXY === false ? {} : {
+      '/proxyApi/**': {
+        target: 'http://127.0.0.1:6080',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/proxyApi': ''
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

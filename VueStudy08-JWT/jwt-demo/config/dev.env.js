@@ -4,5 +4,7 @@ const prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  BASE_API: '"https://easy-mock.com/mock/5950a2419adc231f356a6636/vue-admin"',
+  BASE_API: '"http://localhost:8080"',
+  // 是否开启代理, 重置后需重启vue-cli
+  OPEN_PROXY: false
 })
