@@ -41,7 +41,7 @@ service.interceptors.response.use(
     const res = response.data
     if (res.code !== 200) {
       Message({
-        message: res.message,
+        message: res.msg,
         type: 'error',
         duration: 5 * 1000
       })
@@ -69,9 +69,14 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error) // for debug
-    console.log(error.response)
+    console.log(error.response.data)
+
+    let msg = error.response.data.msg
+    if (error.response.data.code === 500) {
+      msg = '服务器异常'
+    }
     Message({
-      message: error.message,
+      message: msg,
       type: 'error',
       duration: 5 * 1000
     })

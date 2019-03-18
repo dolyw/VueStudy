@@ -28,9 +28,9 @@ export function online() {
  * 根据Id查询
  * @param {*} userId
  */
-export function findById(userId) {
+export function findById(id) {
   return request({
-    url: baseURL + userId,
+    url: baseURL + '/' + id,
     method: 'get'
   })
 }
@@ -65,7 +65,7 @@ export function update(data) {
  */
 export function delById(id) {
   return request({
-    url: baseURL + id,
+    url: baseURL + '/' + id,
     method: 'delete'
   })
 }
@@ -76,7 +76,7 @@ export function delById(id) {
  */
 export function onlineById(id) {
   return request({
-    url: baseURL + '/online' + id,
+    url: baseURL + '/online/' + id,
     method: 'delete'
   })
 }

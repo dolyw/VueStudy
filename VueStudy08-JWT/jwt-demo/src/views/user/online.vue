@@ -1,10 +1,10 @@
 <template>
   <div class="dashboard-container">
     <!-- 查询表单 -->
-    <el-form :inline="true" :model="searchForm" label-width="90px" label-suffix="：" size="small">
+    <el-form :inline="true" label-width="90px" label-suffix="：" size="small">
 
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="list(searchForm)">查询</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="list()">查询</el-button>
       </el-form-item>
 
     </el-form>
@@ -53,7 +53,10 @@ export default {
       user.online().then(response => {
         const data = response.data
         this.$set(this, 'tableData', data)
-        // 加载完成
+      }).catch(error => {
+        console.log(error)
+      }).then(() => {
+        // always executed 类似finally
         this.tableLoading = false
       })
     },

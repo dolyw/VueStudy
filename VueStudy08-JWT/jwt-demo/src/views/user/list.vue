@@ -93,7 +93,10 @@ export default {
         const data = response.data
         this.tableData = data.data
         this.totalCount = data.count
-        // 加载完成
+      }).catch(error => {
+        console.log(error)
+      }).then(() => {
+        // always executed 类似finally
         this.tableLoading = false
       })
     },
@@ -101,7 +104,7 @@ export default {
     preById: function(id) {
       // this.$nextTick Dom渲染完执行
       /* this.$nextTick(() => {
-        this.$refs.addOrUpdate.preById(userId)
+        this.$refs.listEdit.preById(userId)
       }) */
       this.$refs.listEdit.preById(id)
     },
